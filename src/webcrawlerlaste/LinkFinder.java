@@ -5,15 +5,10 @@
  */
 package webcrawlerlaste;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,17 +52,14 @@ public class LinkFinder extends Thread {
 
     @Override
     public void run() {
-        if (this.depth < 0) {
-            return;
-        }
-        if (this.root.getURL().contains(".rar") || this.root.getURL().contains(".png")
-                || this.root.getURL().contains(".jpg")
+        if (this.depth < 0 || this.root.getURL().contains(".rar") || this.root.getURL().contains(".png")
+                || this.root.getURL().contains(".jpg") || this.root.getURL().contains(".css")
                 || this.root.getURL().contains(".zip") || this.root.getURL().contains(".gif")
-                || this.root.getURL().contains(".mp4") || this.root.getURL().contains(".jpeg")) {
-            Downloader dl = new Downloader(this.root.getURL(), this.root.getPath());
-            Main.downloads.add(dl);
+                || this.root.getURL().contains(".mp4") || this.root.getURL().contains(".jpeg")
+                || this.root.getURL().contains(".js")) {
             return;
         }
+
         // in while check if downloadable or not add as child
         String input = get_HTML(this.root.getURL());
         String patternString = "\\s*(?i)(href|src)\\s*=\\s*(\"([^\"]*\")|'[^']*'|([^'\">\\s]+))";
@@ -81,16 +73,25 @@ public class LinkFinder extends Thread {
                 match = match.replace("\'", "");
                 match = match.replace("=", "");
                 match = match.replace("src", "");
-                if(Main.alllinks.contains(this.root.getURL())){
+                if (Main.alllinks.contains(this.root.getURL())) {
                     continue;
                 }
                 Main.alllinks.add(match);
+                if (match.contains(".rar") || match.contains(".png")
+                        || match.contains(".jpg") || match.contains(".css")
+                        || match.contains(".zip") || match.contains(".gif")
+                        || match.contains(".mp4") || match.contains(".jpeg")
+                        || match.contains(".js")) {
+                    Downloader dl = new Downloader(match, this.root.getPath());
+                    System.out.println(match);
+                    Main.downloads.add(dl);
+                    continue;
+                }
                 FileCreator fc = new FileCreator(this.root.getPath(), match);
                 Node newnode = new Node(match, fc.getPath());
                 newnode.setParent(this.root);
                 this.root.addChild(newnode);
                 Main.allnodes.add(newnode);
-                System.out.println(match);
                 LinkFinder lf = new LinkFinder(newnode, this.depth - 1);
                 lf.join();
             } catch (Exception e) {
