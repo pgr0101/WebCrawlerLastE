@@ -8,22 +8,20 @@ package webcrawlerlaste;
 import java.io.File;
 import java.util.Enumeration;
 import java.util.Vector;
+import javax.swing.JScrollPane;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-
-public class FileSystemModel1 implements TreeModel {
+public class FileSystemModel1 extends Thread implements TreeModel {
 
     private String root; // The root identifier
-
     private Vector listeners; // Declare the listeners vector
 
     public FileSystemModel1(String root) {
         this.root = root;
-        File tempFile = new File(root);
-
+        File tempFile = new File(this.root);
         listeners = new Vector();
     }
 

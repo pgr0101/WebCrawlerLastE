@@ -48,9 +48,10 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane2" min="-2" pref="185" max="-2" attributes="0"/>
+              <Component id="jScrollPane2" min="-2" pref="234" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane3" pref="702" max="32767" attributes="0"/>
+              <Component id="jScrollPane3" min="-2" pref="653" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -114,6 +115,13 @@
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTree" name="jTree1">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTree()"/>
+          </AuxValues>
+        </Component>
+      </SubComponents>
     </Container>
   </SubComponents>
 </Form>

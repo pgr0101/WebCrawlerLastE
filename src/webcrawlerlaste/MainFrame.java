@@ -27,10 +27,15 @@ class MainFrame extends javax.swing.JFrame {
     }
 
     public MainFrame(String url, int depth, String rootpath) {
-        this();
         this.url = url;
         this.rootpath = rootpath;
         this.depth = depth;
+        initComponents();
+        this.setResizable(false);
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation((int) (d.getWidth() - this.getWidth()) / 2, (int) (d.getHeight() - this.getHeight()) / 2);
+        this.setTitle("Web Crawler");
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         try {
             Thread t = new Thread(new Runnable() {
                 @Override
@@ -46,15 +51,9 @@ class MainFrame extends javax.swing.JFrame {
                 t.join();
             } catch (InterruptedException ex) {
             }
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    FileSystemModel1 fs = new FileSystemModel1("D:/stack");
-                    JTree tree = new JTree(fs);
-                    jScrollPane2 = new JScrollPane(tree);
-                }
-            }).start();
 
+            FileSystemModel1 fm = new FileSystemModel1(this.rootpath);
+            this.jTree1.setModel(fm);
             set_ui();
 
         } catch (Exception ex) {
@@ -110,6 +109,7 @@ class MainFrame extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         downloadList_tab = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
         jMenuBar1 = new javax.swing.JMenuBar();
         addUrl_item = new javax.swing.JMenu();
         downloadAll_item = new javax.swing.JMenu();
@@ -146,6 +146,8 @@ class MainFrame extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(downloadList_tab);
 
+        jScrollPane2.setViewportView(jTree1);
+
         addUrl_item.setText("Add URL");
         addUrl_item.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -170,9 +172,10 @@ class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,7 +193,6 @@ class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         AddUrl add = new AddUrl(this);
         add.setVisible(true);
-
     }//GEN-LAST:event_addUrl_itemMouseClicked
 
     private void downloadAll_itemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_downloadAll_itemMouseClicked
@@ -268,5 +270,6 @@ class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTree jTree1;
     // End of variables declaration//GEN-END:variables
 }

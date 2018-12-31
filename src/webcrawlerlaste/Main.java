@@ -30,8 +30,6 @@ public class Main {
     }
     
     public static void main(String[] args) throws IOException {
-        url = "https://panel.epicpw.com";
-        path = "D:/stack";
         System.setProperty("http.agent", "Chrome");
         int depth = 0;
         root = new Node(url, path);
@@ -42,7 +40,7 @@ public class Main {
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
-        new CreatingTreeModel(path);
+        //new CreatingTreeModel(path);
         System.out.println(allnodes.size());
 
     }
