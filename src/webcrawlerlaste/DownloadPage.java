@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,8 +18,9 @@ import javax.swing.JOptionPane;
  * @author Irana
  */
 public class DownloadPage extends javax.swing.JFrame {
-    
+
     private Downloader df;
+    private boolean flag = false;
 
     /**
      * Creates new form DownloadPage
@@ -34,13 +33,20 @@ public class DownloadPage extends javax.swing.JFrame {
             this.setLocation((int) (d.getWidth() - this.getWidth()) / 2, (int) (d.getHeight() - this.getHeight()) / 2);
             this.setTitle(df.getFileName());
             this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-            this.df=df;
+            this.df = df;
             open_btn.setEnabled(false);
-            url_lab.setText(df.getURL().substring(0, (df.getURL().length()>90?90:df.getURL().length())));
-            status_lab.setText((df.getStatus()?"Downloaded":"Not Downloaded"));
-            size_lab.setText(df.getFileSize() +" Byte");
+            url_lab.setText(df.getURL().substring(0, (df.getURL().length() > 90 ? 90 : df.getURL().length())));
+            status_lab.setText((df.getStatus() ? "Downloaded" : "Not Downloaded"));
+            size_lab.setText(df.getFileSize() + " Byte");
             downloaded_lab.setText("0 Byte");
             this.setAlwaysOnTop(true);
+            if (df.getStatus()) {
+                flag = true;
+                open_btn.setEnabled(true);
+                cancel_btn.setEnabled(true);
+                cancel_btn.setText("Close");
+                download_btn.setEnabled(false);
+            }
         } catch (MalformedURLException ex) {
             JOptionPane.showMessageDialog(null, "connection problem");
         }
@@ -173,21 +179,21 @@ public class DownloadPage extends javax.swing.JFrame {
 
     private void download_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_download_btnMouseClicked
         // TODO add your handling code here:
+        if (df.getStatus() || flag) {
+            return;
+        }
         df.startDownload(progressBar);
         download_btn.setEnabled(false);
         cancel_btn.setEnabled(false);
+        flag = true;
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                try {
-                    downloaded_lab.setText(progressBar.getValue()+" Byte");
-                    if(progressBar.getValue()==df.getFileSize()){
-                        open_btn.setEnabled(true);
-                        cancel_btn.setEnabled(true);
-                        cancel_btn.setText("Close");
-                    }
-                } catch (MalformedURLException ex) {
-                    JOptionPane.showMessageDialog(null, "connection problem");
+                downloaded_lab.setText(progressBar.getValue() + " Byte");
+                if (df.getStatus()) {
+                    open_btn.setEnabled(true);
+                    cancel_btn.setEnabled(true);
+                    cancel_btn.setText("Close");
                 }
             }
         }, 0, 1000);
@@ -195,12 +201,23 @@ public class DownloadPage extends javax.swing.JFrame {
 
     private void cancel_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancel_btnMouseClicked
         // TODO add your handling code here:
-        this.dispose();
+        if (cancel_btn.getText().equals("Close")) {
+            this.dispose();
+        } else if (flag) {
+            return;
+        } else {
+            this.dispose();
+        }
+
+
     }//GEN-LAST:event_cancel_btnMouseClicked
 
     private void open_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_open_btnMouseClicked
         try {
             // TODO add your handling code here:
+            if (!df.getStatus()) {
+                return;
+            }
             df.openFile();
         } catch (IOException ex) {
             ex.printStackTrace();

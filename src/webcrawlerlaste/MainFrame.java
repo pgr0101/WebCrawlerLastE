@@ -111,7 +111,6 @@ class MainFrame extends javax.swing.JFrame {
         jTree1 = new javax.swing.JTree();
         jMenuBar1 = new javax.swing.JMenuBar();
         addUrl_item = new javax.swing.JMenu();
-        downloadAll_item = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -155,14 +154,6 @@ class MainFrame extends javax.swing.JFrame {
         });
         jMenuBar1.add(addUrl_item);
 
-        downloadAll_item.setText("Download All");
-        downloadAll_item.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                downloadAll_itemMouseClicked(evt);
-            }
-        });
-        jMenuBar1.add(downloadAll_item);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -193,11 +184,6 @@ class MainFrame extends javax.swing.JFrame {
         AddUrl add = new AddUrl(this);
         add.setVisible(true);
     }//GEN-LAST:event_addUrl_itemMouseClicked
-
-    private void downloadAll_itemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_downloadAll_itemMouseClicked
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_downloadAll_itemMouseClicked
 
     private void downloadList_tabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_downloadList_tabMouseClicked
         // TODO add your handling code here:
@@ -264,7 +250,6 @@ class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu addUrl_item;
-    private javax.swing.JMenu downloadAll_item;
     private javax.swing.JTable downloadList_tab;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane2;
