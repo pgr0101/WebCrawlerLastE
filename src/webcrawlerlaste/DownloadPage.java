@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JOptionPane;
+import javax.swing.JTree;
 
 /**
  *
@@ -21,11 +22,13 @@ public class DownloadPage extends javax.swing.JFrame {
 
     private Downloader df;
     private boolean flag = false;
+    private String rootp;
+    private JTree jt;
 
     /**
      * Creates new form DownloadPage
      */
-    public DownloadPage(Downloader df) {
+    public DownloadPage(Downloader df , JTree jt , String rootp) {
         try {
             initComponents();
             this.setResizable(false);
@@ -34,6 +37,8 @@ public class DownloadPage extends javax.swing.JFrame {
             this.setTitle(df.getFileName());
             this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
             this.df = df;
+            this.jt = jt;
+            this.rootp = rootp;
             open_btn.setEnabled(false);
             url_lab.setText(df.getURL().substring(0, (df.getURL().length() > 90 ? 90 : df.getURL().length())));
             status_lab.setText((df.getStatus() ? "Downloaded" : "Not Downloaded"));
@@ -182,7 +187,7 @@ public class DownloadPage extends javax.swing.JFrame {
         if (df.getStatus() || flag) {
             return;
         }
-        df.startDownload(progressBar);
+        df.startDownload(progressBar , this.jt , this.rootp);
         download_btn.setEnabled(false);
         cancel_btn.setEnabled(false);
         flag = true;

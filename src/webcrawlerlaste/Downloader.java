@@ -19,6 +19,7 @@ import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import javax.swing.JProgressBar;
+import javax.swing.JTree;
 
 /**
  *
@@ -51,6 +52,16 @@ public class Downloader extends Thread {
             this.name = this.url.replace("http://", "");
         }
         this.name = this.name.replace("/", "-");
+        this.name = this.name.replace(" ", "");
+        this.name = this.name.replace("?", "");
+        this.name = this.name.replace("*", "");
+        this.name = this.name.replace("\\", "");
+        this.name = this.name.replace("|", "");
+        this.name = this.name.replace(":", "");
+        this.name = this.name.replace("\"", "");
+        this.name = this.name.replace("<", "");
+        this.name = this.name.replace(">", "");
+        this.cp = this.rootpath + "/" + this.name;
 
     }
 
@@ -61,7 +72,6 @@ public class Downloader extends Thread {
             download();
         } catch (Exception ex) {
             try {
-                this.cp = this.rootpath + this.name;
                 URL df = new URL(this.url);
                 ReadableByteChannel rbc = Channels.newChannel(df.openStream());
                 File file = new File(this.rootpath + this.name);
@@ -69,29 +79,30 @@ public class Downloader extends Thread {
                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                 this.status = true;
             } catch (Exception ex1) {
+                ex.printStackTrace();
             }
         }
     }
 
     public void download() throws Exception {
-        URLConnection uc = URI.create(this.url).toURL().openConnection();
+        URLConnection uc = URI.create(this.url.replace(" ", "")).toURL().openConnection();
         uc.addRequestProperty("User-Agent",
                 "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
         HttpURLConnection http = null;
         http = (HttpURLConnection) uc;
         double filesize = (double) http.getContentLength();
         BufferedInputStream in = new BufferedInputStream(http.getInputStream());
-        FileOutputStream fos = new FileOutputStream(new File(this.rootpath + this.name));
+        FileOutputStream fos = new FileOutputStream(new File(this.rootpath + "/" + this.name));
         BufferedOutputStream bos = new BufferedOutputStream(fos, 1024);
         byte[] buffer = new byte[1024];
         double downloaded = 0.00;
         int read = 0;
         double percentDownloaded = 0.00;
+        this.jp.setMaximum((int) filesize);
         while ((read = in.read(buffer, 0, 1024)) >= 0) {
             bos.write(buffer, 0, read);
             downloaded += read;
             percentDownloaded += (downloaded * 100 / filesize);
-            this.jp.setMaximum((int) filesize);
             this.jp.setValue((int) downloaded);
             this.jp.setString(percentDownloaded + "%");
         }
@@ -100,15 +111,16 @@ public class Downloader extends Thread {
         in.close();
     }
 
-    public void startDownload(JProgressBar jp) {
+    public void startDownload(JProgressBar jp, JTree jt, String rootp) {
         this.start();
         this.jp = jp;
+        FileSystemModel1 fm = new FileSystemModel1(rootp);
+        jt.setModel(fm);
     }
 
     public void openFile() throws IOException {
         Desktop desktop = Desktop.getDesktop();
         desktop.open(new File(this.cp));
-
     }
 
     public String getURL() {

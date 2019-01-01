@@ -25,7 +25,7 @@ class MainFrame extends javax.swing.JFrame {
 
     }
 
-    public MainFrame(String url, int depth, String rootpath,MainFrame mf) {
+    public MainFrame(String url, int depth, String rootpath, MainFrame mf) {
         this.url = url;
         this.rootpath = rootpath;
         this.depth = depth;
@@ -40,7 +40,7 @@ class MainFrame extends javax.swing.JFrame {
                 @Override
                 public void run() {
                     try {
-                        Main main = new Main(url, rootpath,depth);
+                        Main main = new Main(url, rootpath, depth);
                     } catch (IOException ex) {
                     }
                 }
@@ -51,8 +51,9 @@ class MainFrame extends javax.swing.JFrame {
             } catch (InterruptedException ex) {
             }
 
-            FileSystemModel1 fm = new FileSystemModel1(this.rootpath);
-            this.jTree1.setModel(fm);
+            FileSystemModel1 fm = new FileSystemModel1(rootpath);
+            jTree1.setModel(fm);
+
             set_ui();
 
         } catch (Exception ex) {
@@ -92,7 +93,7 @@ class MainFrame extends javax.swing.JFrame {
 
             System.out.println(allnodes.size());
         } catch (Exception ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
 
     }
@@ -191,7 +192,8 @@ class MainFrame extends javax.swing.JFrame {
         if (Main.downloads == null) {
             return;
         }
-        DownloadPage dp = new DownloadPage(Main.downloads.get(downloadList_tab.getSelectedRow()));
+        Downloader dnld = Main.downloads.get(downloadList_tab.getSelectedRow());
+        DownloadPage dp = new DownloadPage(dnld , this.jTree1 , this.rootpath);
         dp.setVisible(true);
     }//GEN-LAST:event_downloadList_tabMouseClicked
 

@@ -61,7 +61,10 @@ public class LinkFinder extends Thread {
         }
 
         // in while check if downloadable or not add as child
-        String input = get_HTML(this.root.getURL());
+        String rp = this.root.getURL();
+        if(!this.root.getURL().contains("https"))
+            rp = this.root.getURL().replaceAll("http", "https");
+        String input = get_HTML(rp);
         String patternString = "\\s*(?i)(href|src)\\s*=\\s*(\"([^\"]*\")|'[^']*'|([^'\">\\s]+))";
         Pattern pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(input);
