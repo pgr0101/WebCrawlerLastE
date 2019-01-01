@@ -25,7 +25,7 @@ class MainFrame extends javax.swing.JFrame {
 
     }
 
-    public MainFrame(String url, int depth, String rootpath) {
+    public MainFrame(String url, int depth, String rootpath,MainFrame mf) {
         this.url = url;
         this.rootpath = rootpath;
         this.depth = depth;
@@ -40,7 +40,7 @@ class MainFrame extends javax.swing.JFrame {
                 @Override
                 public void run() {
                     try {
-                        Main main = new Main(url, rootpath);
+                        Main main = new Main(url, rootpath,depth);
                     } catch (IOException ex) {
                     }
                 }
@@ -59,6 +59,7 @@ class MainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "connection problem");
             return;
         }
+        mf.dispose();
     }
 
     public void set_ui() {

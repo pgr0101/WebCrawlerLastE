@@ -165,9 +165,8 @@ public class AddUrl extends javax.swing.JFrame {
             return;
         }
         if (!url_tf.getText().isEmpty() && !path_tf.getText().isEmpty() && depth >= 0) {
-            main.dispose();
             this.setVisible(false);
-            MainFrame main1 = new MainFrame(url_tf.getText(), Integer.parseInt(depth_tf.getText()), path_tf.getText());
+            MainFrame main1 = new MainFrame(url_tf.getText(), Integer.parseInt(depth_tf.getText()), path_tf.getText(),main);
             main1.setVisible(true);
             this.dispose();
         }else {

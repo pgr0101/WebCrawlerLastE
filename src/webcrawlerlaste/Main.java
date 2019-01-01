@@ -21,17 +21,18 @@ public class Main {
     protected static ArrayList<String> alllinks = new ArrayList<>();
     protected static ArrayList<Downloader> downloads = new ArrayList<>();
     private static String url , path;
+    private static int depth;
     
-    public Main(String url , String path) throws IOException{
+    public Main(String url , String path,int depth) throws IOException{
         this.url = url;
         this.path = path;
+        this.depth=depth;
         String[] str = {};
         main(str);
     }
     
     public static void main(String[] args) throws IOException {
         System.setProperty("http.agent", "Chrome");
-        int depth = 0;
         root = new Node(url, path);
         tree = new Tree(root);
         LinkFinder lf = new LinkFinder(root, depth);
