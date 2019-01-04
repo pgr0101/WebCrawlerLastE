@@ -20,18 +20,12 @@ public class Main {
     protected static ArrayList<Node> allnodes = new ArrayList<>();
     protected static ArrayList<String> alllinks = new ArrayList<>();
     protected static ArrayList<Downloader> downloads = new ArrayList<>();
-    private static String url , path;
-    private static int depth;
-    
-    public Main(String url , String path,int depth) throws IOException{
+    private static String url, path;
+    protected int depth;
+
+    public Main(String url, String path , int depth) throws IOException {
         this.url = url;
         this.path = path;
-        this.depth=depth;
-        String[] str = {};
-        main(str);
-    }
-    
-    public static void main(String[] args) throws IOException {
         System.setProperty("http.agent", "Chrome");
         root = new Node(url, path);
         tree = new Tree(root);
@@ -41,9 +35,7 @@ public class Main {
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
-        //new CreatingTreeModel(path);
         System.out.println(allnodes.size());
 
     }
-
 }

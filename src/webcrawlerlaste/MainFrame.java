@@ -40,7 +40,8 @@ class MainFrame extends javax.swing.JFrame {
                 @Override
                 public void run() {
                     try {
-                        Main main = new Main(url, rootpath, depth);
+                        Main main = new Main(url, rootpath , depth);
+                        
                     } catch (IOException ex) {
                     }
                 }

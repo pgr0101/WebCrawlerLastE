@@ -18,6 +18,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JProgressBar;
 import javax.swing.JTree;
 
@@ -30,7 +32,7 @@ public class Downloader extends Thread {
     private JProgressBar jp;
     private String url;
     private String rootpath;
-    private String name;
+    private String name = "";
     private int size;
     private String cp;
     private boolean status = false;
@@ -41,7 +43,7 @@ public class Downloader extends Thread {
         if (!url.contains("https") && url.contains("http")) {
             this.url = url.replace("http", "https");
         } else if (!url.contains("https") && !url.contains("http")) {
-            this.url = "http:" + url;
+            this.url = "http://" + url;
         } else {
             this.url = url;
         }
@@ -69,25 +71,21 @@ public class Downloader extends Thread {
     public void run() {
         try {
             // downlaod the files and save them
-            download();
+            download_HTTP();
         } catch (Exception ex) {
+            ex.printStackTrace();
             try {
-                URL df = new URL(this.url);
-                ReadableByteChannel rbc = Channels.newChannel(df.openStream());
-                File file = new File(this.rootpath + this.name);
-                FileOutputStream fos = new FileOutputStream(file);
-                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-                this.status = true;
+                download_HTTPS();
             } catch (Exception ex1) {
-                ex.printStackTrace();
+                ex1.printStackTrace();
             }
         }
     }
 
-    public void download() throws Exception {
+    public void download_HTTP() throws Exception {
         URLConnection uc = URI.create(this.url.replace(" ", "")).toURL().openConnection();
         uc.addRequestProperty("User-Agent",
-                "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
+                "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
         HttpURLConnection http = null;
         http = (HttpURLConnection) uc;
         double filesize = (double) http.getContentLength();
@@ -111,6 +109,36 @@ public class Downloader extends Thread {
         in.close();
     }
 
+    
+    public void download_HTTPS() throws Exception {
+        String u = this.url.replace(" ", "");
+        u = u.replace("http", "https");
+        URLConnection uc = URI.create(u).toURL().openConnection();
+        uc.addRequestProperty("User-Agent",
+                "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
+        HttpURLConnection http = null;
+        http = (HttpURLConnection) uc;
+        double filesize = (double) http.getContentLength();
+        BufferedInputStream in = new BufferedInputStream(http.getInputStream());
+        FileOutputStream fos = new FileOutputStream(new File(this.rootpath + "/" + this.name));
+        BufferedOutputStream bos = new BufferedOutputStream(fos, 1024);
+        byte[] buffer = new byte[1024];
+        double downloaded = 0.00;
+        int read = 0;
+        double percentDownloaded = 0.00;
+        this.jp.setMaximum((int) filesize);
+        while ((read = in.read(buffer, 0, 1024)) >= 0) {
+            bos.write(buffer, 0, read);
+            downloaded += read;
+            percentDownloaded += (downloaded * 100 / filesize);
+            this.jp.setValue((int) downloaded);
+            this.jp.setString(percentDownloaded + "%");
+        }
+        this.status = true;
+        bos.close();
+        in.close();
+    }
+    
     public void startDownload(JProgressBar jp, JTree jt, String rootp) {
         this.start();
         this.jp = jp;
@@ -139,8 +167,7 @@ public class Downloader extends Thread {
                 ((HttpURLConnection) conn).setRequestMethod("HEAD");
             }
             conn.addRequestProperty("User-Agent",
-                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
-            conn.getInputStream();
+                    "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");conn.getInputStream();
             return conn.getContentLength();
         } catch (IOException e) {
             throw new RuntimeException(e);

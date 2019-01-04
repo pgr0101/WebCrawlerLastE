@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/Data%20structure/project%2002/WebCrawlerLastE/src/webcrawlerlaste/DownloadPage.java</file>
-            <file>file:/F:/Data%20structure/project%2002/WebCrawlerLastE/src/webcrawlerlaste/Downloader.java</file>
-            <file>file:/F:/Data%20structure/project%2002/WebCrawlerLastE/src/webcrawlerlaste/MainFrame.java</file>
-            <file>file:/F:/Data%20structure/project%2002/WebCrawlerLastE/src/webcrawlerlaste/AddUrl.java</file>
-            <file>file:/F:/Data%20structure/project%2002/WebCrawlerLastE/src/webcrawlerlaste/Main.java</file>
+            <file>file:/D:/java%20projects/WebCrawlerLastE/src/webcrawlerlaste/DownloadPage.java</file>
+            <file>file:/D:/java%20projects/WebCrawlerLastE/src/webcrawlerlaste/Main.java</file>
+            <file>file:/D:/java%20projects/WebCrawlerLastE/src/webcrawlerlaste/Downloader.java</file>
+            <file>file:/D:/java%20projects/WebCrawlerLastE/src/webcrawlerlaste/LinkFinder.java</file>
+            <file>file:/D:/java%20projects/WebCrawlerLastE/src/webcrawlerlaste/FileCreator.java</file>
+            <file>file:/D:/java%20projects/WebCrawlerLastE/src/webcrawlerlaste/MainFrame.java</file>
         </group>
     </open-files>
 </project-private>
